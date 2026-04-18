@@ -14,6 +14,7 @@
 	import { formatBytes } from '$lib/utils/format';
 	import { getLocale } from '$lib/paraglide/runtime';
 	import { m } from '$lib/paraglide/messages.js';
+	import { toastStore } from '$lib/stores/toast.svelte';
 
 	let source = $state<Provider>('google');
 	const destination = $derived<Provider>(source === 'google' ? 'microsoft' : 'google');
@@ -162,6 +163,7 @@
 		});
 		if (!res.ok || !res.body) {
 			progress = { ...progress, running: false, failed: true, message: m.transfer_failed() };
+			toastStore.error(m.transfer_failed());
 			return;
 		}
 
@@ -194,10 +196,12 @@
 			progress = { ...progress, running: false, done: true, message: m.transfer_done() };
 			selectedFiles = new Map();
 			loadQuota();
+			toastStore.success(m.transfer_done());
 		} else if (ev.type === 'fatal') {
 			const msg =
 				ev.message === 'insufficient_space' ? m.transfer_insufficient_space() : m.transfer_failed();
 			progress = { ...progress, running: false, failed: true, message: msg };
+			toastStore.error(msg);
 		}
 	}
 
@@ -263,57 +267,75 @@
 
 <!-- Sticky bottom action bar -->
 <div
-	class="sticky bottom-0 z-10 -mx-4 mt-4 border-t px-4 py-3"
+	class="sticky bottom-0 z-10 -mx-4 mt-4 border-t"
 	style="background-color: rgb(var(--surface) / 0.96); border-color: rgb(var(--border)); backdrop-filter: blur(12px);"
 >
-	<div class="flex flex-wrap items-center justify-between gap-3">
-		<div class="text-sm">
-			{#if selectedFiles.size > 0}
-				<div class="font-medium">
-					{m.transfer_selected_count({ count: String(selectedFiles.size) })}
-					<span class="mx-1.5 opacity-30">·</span>
-					{m.transfer_selected_size({ size: formatBytes(selectedSize, getLocale()) })}
-				</div>
-			{:else}
-				<div style="color: rgb(var(--text-muted));">No files selected</div>
-			{/if}
-			<div class="mt-0.5 text-xs" style="color: rgb(var(--text-muted));">
-				{m.transfer_destination_free({ size: destQuota ? formatBytes(destQuota.free, getLocale()) : '—' })}
-			</div>
-			{#if insufficientSpace}
-				<div class="mt-0.5 text-xs font-medium" style="color: rgb(var(--danger));">
-					⚠ {m.transfer_insufficient_space()}
-				</div>
-			{/if}
+	<!-- Progress bar -->
+	{#if progress.running || progress.done}
+		{@const pct = progress.total > 0 ? Math.round((progress.current / progress.total) * 100) : 0}
+		<div class="relative h-1.5 w-full overflow-hidden" style="background-color: rgb(var(--border));">
+			<div
+				class="absolute left-0 top-0 h-full transition-all duration-500 ease-out"
+				style="width: {progress.done ? 100 : pct}%; background-color: rgb(var({progress.done ? '--success' : '--accent'}));"
+			></div>
 		</div>
+	{/if}
 
-		<div class="flex items-center gap-3">
-			{#if progress.running}
-				<div class="flex items-center gap-2 text-sm" style="color: rgb(var(--text-muted));">
-					<RefreshCw class="size-4 animate-spin" />
-					{progress.message || `${progress.current} / ${progress.total}`}
+	<div class="px-4 py-3">
+		<!-- Progress label row (only while running) -->
+		{#if progress.running && progress.total > 0}
+			<div class="mb-2 flex items-center gap-2 text-sm" style="color: rgb(var(--text-muted));">
+				<RefreshCw class="size-3.5 animate-spin shrink-0" />
+				<span>
+					{m.transfer_progress({ current: String(progress.current), total: String(progress.total) })}
+				</span>
+				<span class="ml-auto font-medium tabular-nums" style="color: rgb(var(--accent));">
+					{progress.total > 0 ? Math.round((progress.current / progress.total) * 100) : 0}%
+				</span>
+			</div>
+		{/if}
+
+		<div class="flex flex-wrap items-center justify-between gap-3">
+			<div class="text-sm">
+				{#if selectedFiles.size > 0}
+					<div class="font-medium">
+						{m.transfer_selected_count({ count: String(selectedFiles.size) })}
+						<span class="mx-1.5 opacity-30">·</span>
+						{m.transfer_selected_size({ size: formatBytes(selectedSize, getLocale()) })}
+					</div>
+				{:else}
+					<div style="color: rgb(var(--text-muted));">No files selected</div>
+				{/if}
+				<div class="mt-0.5 text-xs" style="color: rgb(var(--text-muted));">
+					{m.transfer_destination_free({ size: destQuota ? formatBytes(destQuota.free, getLocale()) : '—' })}
 				</div>
-			{:else if progress.done}
-				<span class="text-sm font-medium" style="color: rgb(var(--success));">✓ {progress.message}</span>
-			{:else if progress.failed}
-				<span class="text-sm font-medium" style="color: rgb(var(--danger));">✗ {progress.message}</span>
-			{/if}
+				{#if insufficientSpace}
+					<div class="mt-0.5 text-xs font-medium" style="color: rgb(var(--danger));">
+						⚠ {m.transfer_insufficient_space()}
+					</div>
+				{/if}
+			</div>
 
-			<Button
-				variant="primary"
-				disabled={progress.running || checkingConflicts || selectedFiles.size === 0 || insufficientSpace}
-				onclick={startTransfer}
-			>
-				{#snippet children()}
-					{#if checkingConflicts}
-						<RefreshCw class="size-4 animate-spin" />
-						Checking…
-					{:else}
-						<Play class="size-4" />
-						{m.transfer_start()}
-					{/if}
-				{/snippet}
-			</Button>
+			<div class="flex items-center gap-3">
+				<Button
+					variant="primary"
+					disabled={progress.running || checkingConflicts || selectedFiles.size === 0 || insufficientSpace}
+					onclick={startTransfer}
+				>
+					{#snippet children()}
+						{#if checkingConflicts}
+							<RefreshCw class="size-4 animate-spin" />
+							Checking…
+						{:else if progress.running}
+							<RefreshCw class="size-4 animate-spin" />
+							Transferring…
+						{:else}
+							<Play class="size-4" />
+							{m.transfer_start()}
+						{/if}
+					{/snippet}
+				</Button>
+			</div>
 		</div>
 	</div>
 </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import Navbar from '$lib/components/Navbar.svelte';
+	import Toaster from '$lib/components/Toaster.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	let { children } = $props();
@@ -10,6 +11,7 @@
 	<title>{m.app_name()}</title>
 </svelte:head>
 
+<Toaster />
 <div class="flex min-h-dvh flex-col">
 	<Navbar />
 	<main class="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
