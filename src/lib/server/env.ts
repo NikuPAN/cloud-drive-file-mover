@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import { env as pubEnv } from '$env/dynamic/public';
 
 function required(name: string, value: string | undefined): string {
 	if (!value) throw new Error(`Missing required env var: ${name}`);
@@ -7,7 +8,7 @@ function required(name: string, value: string | undefined): string {
 
 export const serverEnv = {
 	get PUBLIC_ORIGIN(): string {
-		return required('PUBLIC_ORIGIN', env.PUBLIC_ORIGIN);
+		return required('PUBLIC_ORIGIN', pubEnv.PUBLIC_ORIGIN);
 	},
 	get GOOGLE_CLIENT_ID(): string {
 		return required('GOOGLE_CLIENT_ID', env.GOOGLE_CLIENT_ID);
