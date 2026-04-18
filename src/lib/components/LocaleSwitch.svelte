@@ -25,8 +25,8 @@
 	<select
 		value={current}
 		onchange={onChange}
-		class="rounded-md border bg-transparent px-2 py-1 text-sm"
-		style="border-color: rgb(var(--border));"
+		class="cursor-pointer rounded-md border px-2 py-1 text-sm"
+		style="background-color: rgb(var(--surface-2)); color: rgb(var(--text)); border-color: rgb(var(--border));"
 	>
 		{#each locales as loc (loc)}
 			<option value={loc}>{labels[loc]}</option>

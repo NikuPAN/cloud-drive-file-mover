@@ -41,10 +41,13 @@
 		done: boolean;
 	}>({ running: false, current: 0, total: 0, message: '', failed: false, done: false });
 
+	let planBytes = $state<number | null>(null);
+
 	const selectedIds = $derived(new Set(selectedFiles.keys()));
 	const selectedSize = $derived(
 		[...selectedFiles.values()].reduce((sum, f) => sum + (f.size ?? 0), 0)
 	);
+	const hasFolders = $derived([...selectedFiles.values()].some((f) => f.isFolder));
 	const hasWorkspaceDocs = $derived(
 		[...selectedFiles.values()].some((f) => f.isWorkspaceDoc) && source === 'google'
 	);
@@ -83,6 +86,7 @@
 		breadcrumbs = [];
 		listing = null;
 		destQuota = null;
+		planBytes = null;
 	}
 
 	function toggleSelect(file: DriveFile) {
@@ -150,6 +154,7 @@
 
 	async function runTransfer() {
 		progress = { running: true, current: 0, total: 0, message: '', failed: false, done: false };
+		planBytes = null;
 		const res = await fetch('/api/transfer', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -185,6 +190,7 @@
 	function handleEvent(ev: Record<string, unknown>) {
 		if (ev.type === 'plan') {
 			progress = { ...progress, total: ev.total as number };
+			if (ev.totalBytes != null) planBytes = ev.totalBytes as number;
 		} else if (ev.type === 'progress') {
 			progress = {
 				...progress,
@@ -301,7 +307,13 @@
 					<div class="font-medium">
 						{m.transfer_selected_count({ count: String(selectedFiles.size) })}
 						<span class="mx-1.5 opacity-30">·</span>
-						{m.transfer_selected_size({ size: formatBytes(selectedSize, getLocale()) })}
+						{#if planBytes != null}
+							{m.transfer_selected_size({ size: formatBytes(planBytes, getLocale()) })}
+						{:else if hasFolders}
+							<span class="font-normal" style="color: rgb(var(--text-muted));">Size: calculating…</span>
+						{:else}
+							{m.transfer_selected_size({ size: formatBytes(selectedSize, getLocale()) })}
+						{/if}
 					</div>
 				{:else}
 					<div style="color: rgb(var(--text-muted));">No files selected</div>
