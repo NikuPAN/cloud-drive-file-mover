@@ -1,4 +1,4 @@
-export type Provider = 'google' | 'microsoft';
+export type Provider = 'google' | 'microsoft' | 'dropbox' | 'box';
 
 export interface DriveFile {
 	id: string;
@@ -27,6 +27,8 @@ export interface Quota {
 export interface SessionData {
 	google?: { accessToken: string; refreshToken?: string; expiresAt: number };
 	microsoft?: { accessToken: string; refreshToken?: string; expiresAt: number };
+	dropbox?: { accessToken: string; refreshToken?: string; expiresAt: number };
+	box?: { accessToken: string; refreshToken?: string; expiresAt: number };
 }
 
 export type ConflictStrategy = 'skip' | 'rename' | 'overwrite';

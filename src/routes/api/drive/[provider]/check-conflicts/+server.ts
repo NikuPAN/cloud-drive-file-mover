@@ -6,7 +6,7 @@ import type { RequestHandler } from './$types';
 // Quick top-level conflict check — returns names that already exist at destination root
 export const POST: RequestHandler = async ({ params, request, cookies }) => {
 	const provider = params.provider as Provider;
-	if (provider !== 'google' && provider !== 'microsoft') throw error(400, 'Unknown provider');
+	if (!['google', 'microsoft', 'dropbox', 'box'].includes(provider)) throw error(400, 'Unknown provider');
 
 	const p = await getProvider(provider, cookies);
 	if (!p) throw error(401, 'Not connected');

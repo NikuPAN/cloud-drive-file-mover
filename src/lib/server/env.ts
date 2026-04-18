@@ -25,6 +25,18 @@ export const serverEnv = {
 	get MICROSOFT_TENANT(): string {
 		return env.MICROSOFT_TENANT ?? 'common';
 	},
+	get DROPBOX_CLIENT_ID(): string {
+		return required('DROPBOX_CLIENT_ID', env.DROPBOX_CLIENT_ID);
+	},
+	get DROPBOX_CLIENT_SECRET(): string {
+		return required('DROPBOX_CLIENT_SECRET', env.DROPBOX_CLIENT_SECRET);
+	},
+	get BOX_CLIENT_ID(): string {
+		return required('BOX_CLIENT_ID', env.BOX_CLIENT_ID);
+	},
+	get BOX_CLIENT_SECRET(): string {
+		return required('BOX_CLIENT_SECRET', env.BOX_CLIENT_SECRET);
+	},
 	get SESSION_SECRET(): string {
 		return required('SESSION_SECRET', env.SESSION_SECRET);
 	}

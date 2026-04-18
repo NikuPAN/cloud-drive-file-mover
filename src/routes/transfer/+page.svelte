@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowRight, RefreshCw, ArrowLeftRight, Play, Info } from 'lucide-svelte';
+	import { ArrowRight, RefreshCw, Play, Info } from 'lucide-svelte';
 	import FileTable from '$lib/components/FileTable.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -16,8 +16,32 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { toastStore } from '$lib/stores/toast.svelte';
 
+	let { data } = $props();
+
+	const PROVIDER_LABELS: Record<Provider, string> = {
+		google: 'Google Drive',
+		microsoft: 'OneDrive',
+		dropbox: 'Dropbox',
+		box: 'Box'
+	};
+
+	const connectedProviders = $derived(
+		(Object.entries(data.connected) as [Provider, boolean][])
+			.filter(([, v]) => v)
+			.map(([k]) => k)
+	);
+
 	let source = $state<Provider>('google');
-	const destination = $derived<Provider>(source === 'google' ? 'microsoft' : 'google');
+	let destination = $state<Provider>('microsoft');
+
+	// Sync source/destination to connected providers on mount and when connection changes
+	$effect(() => {
+		const connected = connectedProviders;
+		if (!data.connected[source]) source = connected.find((p) => p !== destination) ?? connected[0];
+		if (!data.connected[destination] || destination === source) {
+			destination = connected.find((p) => p !== source) ?? connected[1];
+		}
+	});
 
 	let listing = $state<DriveListing | null>(null);
 	let loading = $state(false);
@@ -80,13 +104,25 @@
 		}
 	}
 
-	function swap() {
-		source = destination;
+	function onSourceChange(e: Event) {
+		const val = (e.currentTarget as HTMLSelectElement).value as Provider;
+		if (val === destination) {
+			destination = connectedProviders.find((p) => p !== val) ?? destination;
+		}
+		source = val;
 		selectedFiles = new Map();
 		breadcrumbs = [];
 		listing = null;
+		planBytes = null;
+	}
+
+	function onDestinationChange(e: Event) {
+		const val = (e.currentTarget as HTMLSelectElement).value as Provider;
+		if (val === source) return;
+		destination = val;
 		destQuota = null;
 		planBytes = null;
+		loadQuota();
 	}
 
 	function toggleSelect(file: DriveFile) {
@@ -107,8 +143,6 @@
 
 	async function startTransfer() {
 		if (selectedFiles.size === 0 || insufficientSpace) return;
-
-		// Show Workspace modal first if applicable
 		if (hasWorkspaceDocs) {
 			showWorkspaceModal = true;
 			return;
@@ -117,7 +151,6 @@
 	}
 
 	async function checkConflictsAndProceed() {
-		// Quick top-level conflict check against destination
 		checkingConflicts = true;
 		try {
 			const names = [...selectedFiles.values()].map((f) => f.name);
@@ -136,7 +169,6 @@
 		} finally {
 			checkingConflicts = false;
 		}
-		// No conflicts — proceed directly with safe default (rename)
 		await runTransfer();
 	}
 
@@ -218,34 +250,39 @@
 	});
 </script>
 
-<!-- Direction bar -->
+<!-- Direction bar: source + destination selects -->
 <div
 	class="mb-5 flex flex-wrap items-center gap-3 rounded-xl border p-4"
 	style="background-color: rgb(var(--surface-2)); border-color: rgb(var(--border));"
 >
 	<div class="flex items-center gap-2 text-sm font-medium">
 		<span style="color: rgb(var(--text-muted));">{m.transfer_source()}:</span>
-		<span
-			class="rounded-md px-2.5 py-1 font-semibold"
-			style="background-color: rgb(var(--accent) / 0.12); color: rgb(var(--accent));"
+		<select
+			value={source}
+			onchange={onSourceChange}
+			class="cursor-pointer rounded-md border px-2 py-1 text-sm font-semibold"
+			style="background-color: rgb(var(--accent) / 0.1); color: rgb(var(--accent)); border-color: rgb(var(--accent) / 0.3);"
 		>
-			{source === 'google' ? 'Google Drive' : 'OneDrive'}
-		</span>
+			{#each connectedProviders as p (p)}
+				<option value={p}>{PROVIDER_LABELS[p]}</option>
+			{/each}
+		</select>
 	</div>
-	<ArrowRight class="size-4" style="color: rgb(var(--text-muted));" />
+
+	<ArrowRight class="size-4 shrink-0" style="color: rgb(var(--text-muted));" />
+
 	<div class="flex items-center gap-2 text-sm font-medium">
 		<span style="color: rgb(var(--text-muted));">{m.transfer_destination()}:</span>
-		<span class="rounded-md px-2.5 py-1 font-semibold" style="background-color: rgb(var(--surface)); color: rgb(var(--text));">
-			{destination === 'google' ? 'Google Drive' : 'OneDrive'}
-		</span>
-	</div>
-	<div class="ml-auto">
-		<Button variant="secondary" size="sm" onclick={swap}>
-			{#snippet children()}
-				<ArrowLeftRight class="size-4" />
-				{m.transfer_swap()}
-			{/snippet}
-		</Button>
+		<select
+			value={destination}
+			onchange={onDestinationChange}
+			class="cursor-pointer rounded-md border px-2 py-1 text-sm font-semibold"
+			style="background-color: rgb(var(--surface)); color: rgb(var(--text)); border-color: rgb(var(--border));"
+		>
+			{#each connectedProviders.filter((p) => p !== source) as p (p)}
+				<option value={p}>{PROVIDER_LABELS[p]}</option>
+			{/each}
+		</select>
 	</div>
 </div>
 
@@ -288,7 +325,6 @@
 	{/if}
 
 	<div class="px-4 py-3">
-		<!-- Progress label row (only while running) -->
 		{#if progress.running && progress.total > 0}
 			<div class="mb-2 flex items-center gap-2 text-sm" style="color: rgb(var(--text-muted));">
 				<RefreshCw class="size-3.5 animate-spin shrink-0" />
@@ -369,7 +405,7 @@
 	{/snippet}
 </Modal>
 
-<!-- Conflict modal (only shown when conflicts detected) -->
+<!-- Conflict modal -->
 <Modal
 	open={showConflictModal}
 	title={m.modal_conflict_title()}

@@ -50,7 +50,7 @@ const VERIFIER_COOKIE = 'cdfm_oauth_verifier';
 
 export function setOAuthFlowCookies(
 	cookies: Cookies,
-	provider: 'google' | 'microsoft',
+	provider: 'google' | 'microsoft' | 'dropbox' | 'box',
 	state: string,
 	codeVerifier: string
 ): void {
@@ -67,7 +67,7 @@ export function setOAuthFlowCookies(
 
 export function readOAuthFlowCookies(
 	cookies: Cookies,
-	provider: 'google' | 'microsoft'
+	provider: 'google' | 'microsoft' | 'dropbox' | 'box'
 ): { state: string | undefined; codeVerifier: string | undefined } {
 	return {
 		state: cookies.get(`${STATE_COOKIE}_${provider}`),
@@ -77,8 +77,27 @@ export function readOAuthFlowCookies(
 
 export function clearOAuthFlowCookies(
 	cookies: Cookies,
-	provider: 'google' | 'microsoft'
+	provider: 'google' | 'microsoft' | 'dropbox' | 'box'
 ): void {
 	cookies.delete(`${STATE_COOKIE}_${provider}`, { path: '/' });
 	cookies.delete(`${VERIFIER_COOKIE}_${provider}`, { path: '/' });
+}
+
+// State-only helpers for providers that don't use PKCE (Dropbox, Box)
+export function setOAuthState(cookies: Cookies, provider: 'dropbox' | 'box', state: string): void {
+	cookies.set(`${STATE_COOKIE}_${provider}`, state, {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'lax',
+		secure: !serverEnv.PUBLIC_ORIGIN.startsWith('http://localhost'),
+		maxAge: 60 * 10
+	});
+}
+
+export function readOAuthState(cookies: Cookies, provider: 'dropbox' | 'box'): string | undefined {
+	return cookies.get(`${STATE_COOKIE}_${provider}`);
+}
+
+export function clearOAuthState(cookies: Cookies, provider: 'dropbox' | 'box'): void {
+	cookies.delete(`${STATE_COOKIE}_${provider}`, { path: '/' });
 }

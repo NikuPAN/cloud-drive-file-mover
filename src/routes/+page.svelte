@@ -1,13 +1,24 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
-	import { Check, Cloud, CloudCog, Shield, ArrowRight, LogOut, RefreshCw } from 'lucide-svelte';
+	import { Check, Cloud, CloudCog, Shield, ArrowRight, LogOut, RefreshCw, HardDrive, Box } from 'lucide-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	let { data } = $props();
-	const canContinue = $derived(data.connected.google && data.connected.microsoft);
 
-	async function disconnect(provider: 'google' | 'microsoft') {
+	const providers = [
+		{ provider: 'google' as const, label: 'Google Drive', Icon: Cloud },
+		{ provider: 'microsoft' as const, label: 'Microsoft OneDrive', Icon: CloudCog },
+		{ provider: 'dropbox' as const, label: 'Dropbox', Icon: HardDrive },
+		{ provider: 'box' as const, label: 'Box', Icon: Box }
+	];
+
+	const connectedCount = $derived(
+		Object.values(data.connected).filter(Boolean).length
+	);
+	const canContinue = $derived(connectedCount >= 2);
+
+	async function disconnect(provider: 'google' | 'microsoft' | 'dropbox' | 'box') {
 		await fetch(`/api/auth/${provider}/logout`, { method: 'POST' });
 		await invalidateAll();
 	}
@@ -25,23 +36,21 @@
 	</p>
 </section>
 
-<!-- Connect cards -->
+<!-- Connect cards — 2×2 grid -->
 <section class="mb-8 grid gap-4 sm:grid-cols-2">
-	{#each [
-		{ provider: 'google' as const, label: 'Google Drive', Icon: Cloud, connected: data.connected.google },
-		{ provider: 'microsoft' as const, label: 'Microsoft OneDrive', Icon: CloudCog, connected: data.connected.microsoft }
-	] as card (card.provider)}
+	{#each providers as card (card.provider)}
+		{@const connected = data.connected[card.provider]}
 		<article
 			class="rounded-xl border p-5 transition-shadow"
-			style="background-color: rgb(var(--surface-2)); border-color: rgb(card.connected ? 'var(--success)' : 'var(--border)');"
-			style:border-color={card.connected ? 'rgb(var(--success) / 0.4)' : 'rgb(var(--border))'}
+			style="background-color: rgb(var(--surface-2));"
+			style:border-color={connected ? 'rgb(var(--success) / 0.4)' : 'rgb(var(--border))'}
 		>
 			<div class="mb-4 flex items-center justify-between">
 				<div class="flex items-center gap-2.5">
-					<card.Icon class="size-5" style={card.connected ? 'color: rgb(var(--success));' : ''} />
+					<card.Icon class="size-5" style={connected ? 'color: rgb(var(--success));' : ''} />
 					<span class="font-semibold">{card.label}</span>
 				</div>
-				{#if card.connected}
+				{#if connected}
 					<span
 						class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium"
 						style="background-color: rgb(var(--success) / 0.15); color: rgb(var(--success));"
@@ -52,7 +61,7 @@
 				{/if}
 			</div>
 
-			{#if card.connected}
+			{#if connected}
 				<div class="flex gap-2">
 					<Button variant="secondary" size="sm" class="flex-1" onclick={() => (window.location.href = `/api/auth/${card.provider}/login`)}>
 						{#snippet children()}
@@ -70,7 +79,7 @@
 			{:else}
 				<Button variant="primary" class="w-full" onclick={() => (window.location.href = `/api/auth/${card.provider}/login`)}>
 					{#snippet children()}
-						{card.provider === 'google' ? m.home_connect_google() : m.home_connect_microsoft()}
+						Connect {card.label}
 					{/snippet}
 				</Button>
 			{/if}
@@ -90,13 +99,13 @@
 		<Button variant="ghost" onclick={signOutAll}>
 			{#snippet children()}
 				<LogOut class="size-4" />
-				{m.auth_sign_out()} (both)
+				{m.auth_sign_out()} (all)
 			{/snippet}
 		</Button>
 	</div>
 {:else}
 	<p class="mb-10 text-center text-sm" style="color: rgb(var(--text-muted));">
-		{m.auth_required()}
+		Connect at least 2 drives to continue.
 	</p>
 {/if}
 

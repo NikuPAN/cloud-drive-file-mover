@@ -6,7 +6,9 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	return {
 		connected: {
 			google: !!session.google?.accessToken,
-			microsoft: !!session.microsoft?.accessToken
+			microsoft: !!session.microsoft?.accessToken,
+			dropbox: !!session.dropbox?.accessToken,
+			box: !!session.box?.accessToken
 		}
 	};
 };
