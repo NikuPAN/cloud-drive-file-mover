@@ -54,7 +54,7 @@
 
 			{#if card.connected}
 				<div class="flex gap-2">
-					<Button variant="ghost" size="sm" class="flex-1" onclick={() => (window.location.href = `/api/auth/${card.provider}/login`)}>
+					<Button variant="secondary" size="sm" class="flex-1" onclick={() => (window.location.href = `/api/auth/${card.provider}/login`)}>
 						{#snippet children()}
 							<RefreshCw class="size-3.5" />
 							Switch account
