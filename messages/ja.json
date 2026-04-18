@@ -1,0 +1,73 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"app_name": "クラウドドライブ ファイル移動ツール",
+	"app_tagline": "Google ドライブと OneDrive の間でファイルを移動。無料・オープンソース・プライバシー重視。",
+
+	"nav_home": "ホーム",
+	"nav_transfer": "ファイルを移動",
+	"nav_donate": "開発者を応援",
+
+	"theme_light": "ライト",
+	"theme_dark": "ダーク",
+	"theme_system": "システムに合わせる",
+	"theme_toggle_label": "テーマ",
+	"language_label": "言語",
+
+	"home_heading": "クラウドドライブ間でファイルを移動",
+	"home_sub": "両方のドライブに接続し、移動したいファイルを選ぶだけ。ファイルもアカウント情報も保存しません。",
+	"home_connect_google": "Google ドライブに接続",
+	"home_connect_microsoft": "OneDrive に接続",
+	"home_connected": "接続済み",
+	"home_continue": "移動画面へ進む",
+
+	"disclaimer_heading": "プライバシーに関する約束",
+	"disclaimer_1": "ファイルは保存しません。サーバー上ではメモリを通過するだけで、そのまま宛先のドライブへ転送されます。",
+	"disclaimer_2": "アカウント情報は保存しません。アクセストークンはブラウザ上の暗号化されたセッション Cookie にのみ保持され、ログアウトで失効します。",
+	"disclaimer_3": "個人情報を販売することは決してありません。",
+	"disclaimer_4": "本アプリはオープンソースです。すべてのコードを自由にご確認いただけます。",
+
+	"transfer_source": "送信元",
+	"transfer_destination": "送信先",
+	"transfer_swap": "方向を入れ替える",
+	"transfer_refresh": "更新",
+	"transfer_select_all": "すべて選択",
+	"transfer_clear": "選択解除",
+	"transfer_empty": "このフォルダにファイルはありません。",
+	"transfer_loading": "ファイルを読み込み中…",
+	"transfer_name": "名前",
+	"transfer_kind": "種類",
+	"transfer_size": "サイズ",
+	"transfer_modified": "更新日時",
+	"transfer_folder": "フォルダ",
+	"transfer_file": "ファイル",
+	"transfer_workspace_doc": "Workspace ドキュメント",
+	"transfer_selected_count": "{count} 件選択中",
+	"transfer_selected_size": "合計サイズ: {size}",
+	"transfer_destination_free": "送信先の空き容量: {size}",
+	"transfer_start": "転送を開始",
+	"transfer_cancel": "キャンセル",
+	"transfer_progress": "{current} / {total} を転送中…",
+	"transfer_done": "転送が完了しました。",
+	"transfer_failed": "転送に失敗しました。",
+	"transfer_insufficient_space": "選択したファイルが送信先の空き容量を超えています。選択を減らしてからお試しください。",
+
+	"modal_conflict_title": "送信先に同名のファイルがあります",
+	"modal_conflict_body": "同名のファイルが送信先フォルダに存在する場合、どのように処理しますか?",
+	"modal_conflict_skip": "既存をスキップ",
+	"modal_conflict_rename": "両方保持(新しい方をリネーム)",
+	"modal_conflict_overwrite": "既存を上書き",
+
+	"modal_gdoc_title": "Google Workspace ドキュメント",
+	"modal_gdoc_body": "Google ドキュメント・スプレッドシート・スライドはそのまま OneDrive にコピーできません。Microsoft Office 形式(.docx、.xlsx、.pptx)に変換されます。",
+	"modal_gdoc_convert": "変換して転送",
+	"modal_gdoc_skip": "Workspace ドキュメントをスキップ",
+
+	"auth_required": "続行するには両方のドライブに接続してください。",
+	"auth_sign_out": "ログアウト",
+
+	"donate_heading": "開発者を応援",
+	"donate_body": "このツールが役に立ったら、ちょっとした応援が無料メンテナンスの支えになります。ありがとうございます!",
+	"donate_cta": "支援ページを開く",
+
+	"footer_made_by": "無料・オープンソース・プライバシー重視。"
+}

@@ -1,0 +1,73 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"app_name": "云盘文件搬运工具",
+	"app_tagline": "在 Google 云端硬盘与 OneDrive 之间搬移文件。免费、开源、注重隐私。",
+
+	"nav_home": "首页",
+	"nav_transfer": "搬移文件",
+	"nav_donate": "请我喝咖啡",
+
+	"theme_light": "浅色",
+	"theme_dark": "深色",
+	"theme_system": "跟随系统",
+	"theme_toggle_label": "主题",
+	"language_label": "语言",
+
+	"home_heading": "在云盘之间搬移文件",
+	"home_sub": "连接两个云盘,选择您要的文件,我们帮您搬移。我们不会保存您的文件或账号信息。",
+	"home_connect_google": "连接 Google 云端硬盘",
+	"home_connect_microsoft": "连接 OneDrive",
+	"home_connected": "已连接",
+	"home_continue": "前往搬移文件",
+
+	"disclaimer_heading": "隐私承诺",
+	"disclaimer_1": "我们不会保存您的文件。文件仅在内存中经过我们的服务器,然后直接发送到目标云盘。",
+	"disclaimer_2": "我们不会保存您的账号信息。访问令牌仅存在于您浏览器中加密的会话 Cookie,退出后即失效。",
+	"disclaimer_3": "我们绝不出售您的个人信息。",
+	"disclaimer_4": "本应用是开源项目,每一行代码都可供您审查。",
+
+	"transfer_source": "来源",
+	"transfer_destination": "目标",
+	"transfer_swap": "交换方向",
+	"transfer_refresh": "刷新",
+	"transfer_select_all": "全选",
+	"transfer_clear": "清除选择",
+	"transfer_empty": "此文件夹中没有文件。",
+	"transfer_loading": "加载文件中…",
+	"transfer_name": "名称",
+	"transfer_kind": "类型",
+	"transfer_size": "大小",
+	"transfer_modified": "修改时间",
+	"transfer_folder": "文件夹",
+	"transfer_file": "文件",
+	"transfer_workspace_doc": "Workspace 文档",
+	"transfer_selected_count": "已选择 {count} 项",
+	"transfer_selected_size": "总大小:{size}",
+	"transfer_destination_free": "目标剩余空间:{size}",
+	"transfer_start": "开始搬移",
+	"transfer_cancel": "取消",
+	"transfer_progress": "搬移中 {current} / {total}…",
+	"transfer_done": "搬移完成。",
+	"transfer_failed": "搬移失败。",
+	"transfer_insufficient_space": "所选文件已超过目标可用空间,请取消部分选择后再继续。",
+
+	"modal_conflict_title": "目标位置已存在同名文件",
+	"modal_conflict_body": "当目标文件夹中已存在同名文件时,您希望如何处理?",
+	"modal_conflict_skip": "跳过已存在的",
+	"modal_conflict_rename": "两者保留(重命名新文件)",
+	"modal_conflict_overwrite": "覆盖已存在的",
+
+	"modal_gdoc_title": "Google Workspace 文档",
+	"modal_gdoc_body": "Google 文档、表格和幻灯片无法原样复制到 OneDrive,将转换为 Microsoft Office 格式(.docx、.xlsx、.pptx)。",
+	"modal_gdoc_convert": "转换并搬移",
+	"modal_gdoc_skip": "跳过 Workspace 文档",
+
+	"auth_required": "请先连接两个云盘以继续。",
+	"auth_sign_out": "退出登录",
+
+	"donate_heading": "请我喝咖啡",
+	"donate_body": "如果这个工具为您节省了时间,欢迎小额打赏,让它保持免费并持续维护。感谢!",
+	"donate_cta": "前往赞助页",
+
+	"footer_made_by": "免费、开源、注重隐私。"
+}

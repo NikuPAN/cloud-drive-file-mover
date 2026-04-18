@@ -1,0 +1,73 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"app_name": "Cloud Drive File Mover",
+	"app_tagline": "Move files between Google Drive and OneDrive. Free, open source, private.",
+
+	"nav_home": "Home",
+	"nav_transfer": "Transfer",
+	"nav_donate": "Buy me a coffee",
+
+	"theme_light": "Light",
+	"theme_dark": "Dark",
+	"theme_system": "System",
+	"theme_toggle_label": "Theme",
+	"language_label": "Language",
+
+	"home_heading": "Move files between your cloud drives",
+	"home_sub": "Connect both drives, pick what you want, we move the bytes. We never store your files or account info.",
+	"home_connect_google": "Connect Google Drive",
+	"home_connect_microsoft": "Connect OneDrive",
+	"home_connected": "Connected",
+	"home_continue": "Continue to transfer",
+
+	"disclaimer_heading": "Privacy promise",
+	"disclaimer_1": "We do not store your files. They pass through our server in-memory only, then move directly to the destination drive.",
+	"disclaimer_2": "We do not store your account information. Access tokens live in an encrypted session cookie on your browser and expire on logout.",
+	"disclaimer_3": "We do not sell personal information. Ever.",
+	"disclaimer_4": "This app is open source — you can read and audit every line.",
+
+	"transfer_source": "Source",
+	"transfer_destination": "Destination",
+	"transfer_swap": "Swap direction",
+	"transfer_refresh": "Refresh",
+	"transfer_select_all": "Select all",
+	"transfer_clear": "Clear",
+	"transfer_empty": "No files in this folder.",
+	"transfer_loading": "Loading files…",
+	"transfer_name": "Name",
+	"transfer_kind": "Kind",
+	"transfer_size": "Size",
+	"transfer_modified": "Modified",
+	"transfer_folder": "Folder",
+	"transfer_file": "File",
+	"transfer_workspace_doc": "Workspace document",
+	"transfer_selected_count": "{count} selected",
+	"transfer_selected_size": "Total size: {size}",
+	"transfer_destination_free": "Destination free space: {size}",
+	"transfer_start": "Start transfer",
+	"transfer_cancel": "Cancel",
+	"transfer_progress": "Transferring {current} of {total}…",
+	"transfer_done": "Transfer complete.",
+	"transfer_failed": "Transfer failed.",
+	"transfer_insufficient_space": "Selected files exceed the destination's free space. Deselect some files to proceed.",
+
+	"modal_conflict_title": "Some files already exist at the destination",
+	"modal_conflict_body": "How should we handle filenames that already exist in the destination folder?",
+	"modal_conflict_skip": "Skip existing",
+	"modal_conflict_rename": "Keep both (rename new)",
+	"modal_conflict_overwrite": "Overwrite existing",
+
+	"modal_gdoc_title": "Google Workspace documents",
+	"modal_gdoc_body": "Google Docs, Sheets, and Slides can't be copied natively to OneDrive. They'll be converted to Microsoft Office formats (.docx, .xlsx, .pptx).",
+	"modal_gdoc_convert": "Convert and transfer",
+	"modal_gdoc_skip": "Skip Workspace documents",
+
+	"auth_required": "Please connect both drives to continue.",
+	"auth_sign_out": "Sign out",
+
+	"donate_heading": "Buy me a coffee",
+	"donate_body": "If this tool saved you time, a small tip helps keep it free and maintained. Thank you.",
+	"donate_cta": "Open donation page",
+
+	"footer_made_by": "Free, open source, privacy-first."
+}

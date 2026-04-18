@@ -1,0 +1,73 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"app_name": "雲端硬碟檔案搬運工具",
+	"app_tagline": "在 Google 雲端硬碟與 OneDrive 之間搬移檔案。免費、開源、注重隱私。",
+
+	"nav_home": "首頁",
+	"nav_transfer": "搬移檔案",
+	"nav_donate": "請我喝咖啡",
+
+	"theme_light": "淺色",
+	"theme_dark": "深色",
+	"theme_system": "跟隨系統",
+	"theme_toggle_label": "佈景主題",
+	"language_label": "語言",
+
+	"home_heading": "在雲端硬碟之間搬移檔案",
+	"home_sub": "連接兩個雲端硬碟,挑選您要的檔案,我們協助完成搬移。我們不會儲存您的檔案或帳號資訊。",
+	"home_connect_google": "連接 Google 雲端硬碟",
+	"home_connect_microsoft": "連接 OneDrive",
+	"home_connected": "已連接",
+	"home_continue": "前往搬移檔案",
+
+	"disclaimer_heading": "隱私承諾",
+	"disclaimer_1": "我們不會儲存您的檔案。檔案僅以記憶體方式經過我們的伺服器,隨即直接送往目的雲端硬碟。",
+	"disclaimer_2": "我們不會儲存您的帳號資訊。存取權杖僅儲存於您瀏覽器中加密的工作階段 Cookie,登出後即失效。",
+	"disclaimer_3": "我們絕不販售您的個人資訊。",
+	"disclaimer_4": "本應用程式為開源專案,每一行程式碼都可供您檢閱。",
+
+	"transfer_source": "來源",
+	"transfer_destination": "目的地",
+	"transfer_swap": "交換方向",
+	"transfer_refresh": "重新整理",
+	"transfer_select_all": "全選",
+	"transfer_clear": "清除選取",
+	"transfer_empty": "此資料夾沒有檔案。",
+	"transfer_loading": "載入檔案中…",
+	"transfer_name": "名稱",
+	"transfer_kind": "類型",
+	"transfer_size": "大小",
+	"transfer_modified": "修改時間",
+	"transfer_folder": "資料夾",
+	"transfer_file": "檔案",
+	"transfer_workspace_doc": "Workspace 文件",
+	"transfer_selected_count": "已選取 {count} 項",
+	"transfer_selected_size": "總大小:{size}",
+	"transfer_destination_free": "目的地剩餘空間:{size}",
+	"transfer_start": "開始搬移",
+	"transfer_cancel": "取消",
+	"transfer_progress": "搬移中 {current} / {total}…",
+	"transfer_done": "搬移完成。",
+	"transfer_failed": "搬移失敗。",
+	"transfer_insufficient_space": "所選檔案已超過目的地可用空間,請取消部分選取再繼續。",
+
+	"modal_conflict_title": "目的地已有相同名稱的檔案",
+	"modal_conflict_body": "當目的地資料夾已有相同名稱的檔案時,您希望如何處理?",
+	"modal_conflict_skip": "略過既有檔案",
+	"modal_conflict_rename": "兩者保留(重新命名新檔)",
+	"modal_conflict_overwrite": "覆寫既有檔案",
+
+	"modal_gdoc_title": "Google Workspace 文件",
+	"modal_gdoc_body": "Google 文件、試算表與簡報無法原樣複製至 OneDrive,將轉換為 Microsoft Office 格式(.docx、.xlsx、.pptx)。",
+	"modal_gdoc_convert": "轉換並搬移",
+	"modal_gdoc_skip": "略過 Workspace 文件",
+
+	"auth_required": "請先連接兩個雲端硬碟以繼續。",
+	"auth_sign_out": "登出",
+
+	"donate_heading": "請我喝咖啡",
+	"donate_body": "如果這個工具為您節省了時間,歡迎小額打賞,支持它持續免費維護。感謝您!",
+	"donate_cta": "前往贊助頁",
+
+	"footer_made_by": "免費、開源、注重隱私。"
+}
