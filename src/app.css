@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+	color-scheme: light;
+	--surface: 255 255 255;
+	--surface-2: 248 250 252;
+	--border: 226 232 240;
+	--text: 15 23 42;
+	--text-muted: 100 116 139;
+	--accent: 59 130 246;
+	--accent-contrast: 255 255 255;
+	--danger: 220 38 38;
+	--success: 22 163 74;
+}
+
+:root.dark {
+	color-scheme: dark;
+	--surface: 15 23 42;
+	--surface-2: 30 41 59;
+	--border: 51 65 85;
+	--text: 248 250 252;
+	--text-muted: 148 163 184;
+	--accent: 96 165 250;
+	--accent-contrast: 15 23 42;
+	--danger: 248 113 113;
+	--success: 74 222 128;
+}
+
+html,
+body {
+	background-color: rgb(var(--surface));
+	color: rgb(var(--text));
+}
+
+body {
+	font-family: var(--font-sans);
+	min-height: 100dvh;
+}
+
+/* Scrollbar — subtle, theme-aware */
+* {
+	scrollbar-color: rgb(var(--border)) transparent;
+	scrollbar-width: thin;
+}

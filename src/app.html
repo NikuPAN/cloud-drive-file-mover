@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="%lang%">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Move files between Google Drive and Microsoft OneDrive. Free, open source, and privacy-first." />
+		<script>
+			// Apply theme before first paint to avoid flash of wrong theme
+			(function () {
+				try {
+					var t = localStorage.getItem('theme') || 'system';
+					var dark =
+						t === 'dark' ||
+						(t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+					if (dark) document.documentElement.classList.add('dark');
+				} catch (e) {}
+			})();
+		</script>
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>
